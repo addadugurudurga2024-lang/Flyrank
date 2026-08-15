@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refresh / Content Opportunity Scoring | FlyRank ML Capstone</title>
+<style>
+:root{--ink:#172033;--muted:#5d687b;--line:#e5e9f0;--accent:#3157d5;--soft:#f5f7fb;--card:#fff}
+*{box-sizing:border-box} body{margin:0;background:#f3f5f8;color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.65}
+main{max-width:980px;margin:40px auto;padding:0 22px}.paper{background:var(--card);padding:58px 70px;box-shadow:0 8px 35px rgba(20,30,50,.08)}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:40px;line-height:1.12;margin:12px 0 18px} h2{font-size:23px;margin:40px 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.meta{color:var(--muted);margin-bottom:30px}.abstract{background:var(--soft);border-left:4px solid var(--accent);padding:22px 24px;margin:25px 0}
+.card{border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0;background:#fff}
+code{background:#f0f2f5;padding:2px 5px;border-radius:4px} table{width:100%;border-collapse:collapse;margin:18px 0}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left}th{background:var(--soft)}
+.notice{font-size:14px;color:var(--muted)} a{color:var(--accent)} footer{margin-top:45px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+@media(max-width:700px){.paper{padding:30px 22px}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<main><article class="paper">
+<div class="kicker">FlyRank ML Internship · Machine Learning Capstone</div>
+<h1>Refresh / Content Opportunity Scoring</h1>
+<p class="meta"><strong>Author:</strong> A D S ABHISHEK &nbsp;·&nbsp; <strong>Lane:</strong> Refresh / Content Opportunity Scoring &nbsp;·&nbsp; <strong>Date:</strong> August 2026</p>
+
+<div class="abstract">
+<strong>Abstract.</strong> This research asks whether historical content-performance signals can support a repeatable ranking of content items for editorial review and potential refresh. The analysis uses the FlyRank search-intelligence warehouse, with historical observations transformed into safe prior-window features and a future-looking performance-decline outcome. A transparent recent-performance baseline is compared with a machine-learning ranking approach using a time-aware evaluation design and leakage checks. The output is a ranked action queue with reason codes intended to help editors prioritize review rather than automatically change content. Results are framed as observed, measured, directional, and decision-support evidence, not as proof of Google's ranking algorithm or causal evidence that refreshing content changes search performance.
+</div>
+
+<h2>1. Introduction / Problem Statement</h2>
+<p>The practical decision is which content items should be reviewed first for possible refresh, investigation, monitoring, or protection. The unit of analysis is a content item observed over a defined historical performance window. The output is a ranked refresh-opportunity score that a human editor can use to prioritize limited editorial effort.</p>
+<p>The cost of a wrong call is asymmetric: refreshing healthy content can waste effort and introduce unnecessary changes, while failing to review genuinely deteriorating content can allow performance problems to persist. Historical warehouse data makes it possible to combine multiple signals consistently and test whether those signals provide useful ranking information for a future outcome.</p>
+
+<h2>2. Data</h2>
+<p>The capstone moves beyond the earlier prototype and uses the real FlyRank warehouse. The primary daily performance source is <code>fact_content_daily_performance</code>, documented at <code>report_date × client × content</code> grain. Content-level attributes are obtained from <code>dim_content</code>.</p>
+<p>The public-safe analysis excludes client names, domains, URLs, private queries, credentials, raw exports, and other client-identifying information. Pseudonymous identifiers may be used internally for grouping, joins, or partitioning, but are not predictive features.</p>
+<p>Label-derived and future-derived fields are excluded from the predictive feature set when they encode the outcome or information unavailable at scoring time. Features are constructed only from the historical window; the future window is used only to construct the evaluation outcome.</p>
+
+<h2>3. Methodology</h2>
+<div class="card"><strong>Research question:</strong> Can prior content-performance signals rank items that are more likely to experience a meaningful future performance decline?</div>
+<div class="card"><strong>Target:</strong> A future-decline indicator defined from subsequent performance relative to the preceding feature window, using a pre-specified meaningful threshold.</div>
+<div class="card"><strong>Features:</strong> Safe historical performance, recent movement, engagement measures where available, historical level, volatility, and eligible content characteristics available before the prediction point.</div>
+<div class="card"><strong>Baseline:</strong> A transparent recent-performance deterioration score.</div>
+<div class="card"><strong>Validation:</strong> Time-aware holdout so future information cannot enter model development. Grouping is applied where needed to prevent inappropriate cross-group leakage.</div>
+
+<h2>4. Results</h2>
+<p>The final numerical results are intentionally generated from the fresh capstone notebook rather than being hard-coded into this paper. This prevents stale or invented metrics from being presented as research findings.</p>
+<table>
+<tr><th>Measure</th><th>Baseline</th><th>Model</th></tr>
+<tr><td>ROC-AUC</td><td>To be populated from fresh run</td><td>To be populated from fresh run</td></tr>
+<tr><td>Precision@K</td><td>To be populated from fresh run</td><td>To be populated from fresh run</td></tr>
+<tr><td>Recall@K</td><td>To be populated from fresh run</td><td>To be populated from fresh run</td></tr>
+<tr><td>Lift@K</td><td>1.00× reference</td><td>To be populated from fresh run</td></tr>
+</table>
+<p class="notice"><strong>Submission requirement:</strong> replace these placeholders with the exact values produced by a fresh execution of the final notebook before publishing this page. Report the task base rate alongside precision@K or accuracy.</p>
+
+<h2>5. Interpretation</h2>
+<p>The analysis is designed to identify which historical signals are associated with later performance deterioration. Feature coefficients or feature-importance measures are interpreted as model associations, not causal effects. The final interpretation should describe which signals actually matter in the fitted model, including surprises and negative results.</p>
+<p>If the machine-learning model does not materially outperform the transparent baseline, that is retained as a valid finding: additional model complexity is not automatically useful unless it adds decision value.</p>
+
+<h2>6. Limitations & Honest Framing</h2>
+<ul>
+<li>The future-decline label is a proxy for an editorial review opportunity, not a direct measurement of whether content truly “needs” a refresh.</li>
+<li>Historical associations do not establish that a refresh causes recovery or that any observed change is caused by an editorial intervention.</li>
+<li>The results depend on the available warehouse release, observation windows, target threshold, class balance, and validation design.</li>
+<li>The analysis does not predict or prove Google's ranking algorithm.</li>
+<li>Recommendations are decision support for human review, not automatic publishing decisions.</li>
+</ul>
+
+<h2>7. Ranked Recommendations</h2>
+<div class="card"><strong>Priority 1 — Review first:</strong> content with the strongest model-supported evidence of future decline and clear supporting historical signals.</div>
+<div class="card"><strong>Priority 2 — Investigate:</strong> content with moderate risk or unusual movement where an editor should inspect the underlying signals.</div>
+<div class="card"><strong>Priority 3 — Monitor:</strong> content showing emerging negative movement but insufficient evidence for immediate intervention.</div>
+<div class="card"><strong>Protect:</strong> content with healthy historical behavior and little evidence supporting unnecessary intervention.</div>
+<p>Editors should use the ranking as a triage queue, inspect the reason codes and underlying evidence, and make the final refresh or monitoring decision themselves.</p>
+
+<h2>8. Reproducibility</h2>
+<p>The complete implementation belongs in the repository's <code>work/</code> directory, including the capstone notebook and <code>capstone_report.md</code>. The analysis should be reproducible from a fresh clone using the documented Python environment, permitted Hugging Face read-token access, fixed random seeds where applicable, the documented dataset release, feature/outcome windows, split dates, and model configuration.</p>
+<p>The repository must contain no credentials, tokens, private queries, raw warehouse exports, client names, domains, or URLs. Before submission, run the notebook from a clean environment and verify that every number in this paper matches the fresh run.</p>
+
+<h2>9. Acknowledgments & Data Credit</h2>
+<p>Built on the <strong>FlyRank ML Internship dataset</strong>. Data source: <a href="https://flyrank.ai">FlyRank</a>.</p>
+
+<footer>
+<strong>Reproducibility note:</strong> This paper is a public research presentation of the capstone. All claims are intended as observed, measured, directional, and decision-support statements. No causal or Google-algorithm claims are made.
+</footer>
+</article></main>
+</body></html>
